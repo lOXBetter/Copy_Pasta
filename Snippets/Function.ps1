@@ -20,3 +20,15 @@ function Get-Files {
 
     return $files
 }
+
+Get-Files
+
+Function Get-Windows {
+    $OS = Get-CimInstance Win32_OperatingSystem
+
+    return $OS.Caption,$OS.Version -join " "
+}
+
+# Calling all Functions
+
+Get-Windows 
