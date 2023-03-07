@@ -1,44 +1,47 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QTextEdit
-from subprocess import Popen, PIPE
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
 
-class PowerShellGUI(QWidget):
+class Example(QWidget):
+    
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PowerShell GUI")
-        self.setGeometry(200, 200, 600, 400)
-
-        # Create widgets
-        self.command_input = QLineEdit()
-        self.run_button = QPushButton("Run")
-        self.output_box = QTextEdit()
-
-        # Create layouts
-        input_layout = QHBoxLayout()
-        input_layout.addWidget(self.command_input)
-        input_layout.addWidget(self.run_button)
-
-        main_layout = QVBoxLayout()
-        main_layout.addLayout(input_layout)
-        main_layout.addWidget(self.output_box)
-
-        # Set main layout
-        self.setLayout(main_layout)
-
-        # Connect button click event to function
-        self.run_button.clicked.connect(self.run_command)
-
-    def run_command(self):
-        command = self.command_input.text()
-        process = Popen(["powershell.exe", command], stdout=PIPE)
-        output, errors = process.communicate()
-        if errors:
-            self.output_box.setText(errors.decode())
-        else:
-            self.output_box.setText(output.decode())
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    gui = PowerShellGUI()
-    gui.show()
-    sys.exit(app.exec_())
+        
+        self.initUI()
+        
+        
+    def initUI(self):
+        
+        # Create a button
+        button = QPushButton('Click me!', self)
+        
+        # Connect button clicked signal to function
+        button.clicked.connect(self.buttonClicked)
+        
+        # Create a vertical layout and add button to it
+        vbox = QVBoxLayout()
+        vbox.addWidget(button)
+        
+        # Set the layout for the window
+        self.setLayout(vbox)
+        
+        # Set window properties
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('PyQt6 Example')
+        
+        
+    def buttonClicked(self):
+        print('Button clicked')
+        
+        
+if __name__ == '__main__':
+    
+    # Create an application object
+    app = QApplication([])
+    
+    # Create an instance of the Example class
+    ex = Example()
+    
+    # Show the window
+    ex.show()
+    
+    # Run the application
+    app.exec()
