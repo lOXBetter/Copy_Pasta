@@ -1,1 +1,1 @@
-function Open-Chrome ($site) {Start-Process "chrome.exe" "$site"}
+function Open-Chrome {Start-Process "chrome.exe" "$site"}

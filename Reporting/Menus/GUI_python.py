@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
+
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
 
 class Example(QWidget):
     

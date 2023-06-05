@@ -1,9 +1,9 @@
 ############################################################################################
 ##  script references
 ############################################################################################
-
-.\Check-AzAccessToken.ps1
-.\Use-chrome.ps1
+$CD = .\Login\Azure\AzModules\
+Invoke-Command $CD\Check-AzAccessToken.ps1
+Invoke-Command $CD\Use-chrome.ps1
 
 
 function Connect-AzMod {
