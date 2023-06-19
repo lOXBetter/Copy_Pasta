@@ -8,7 +8,7 @@ sudo apt-get install python
 
 python get-pip.py
 
-sudo pip install PyQt6
+sudo pip install PyQt5
 
 Add-AppxPackage -Path Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.appxbundle
 
