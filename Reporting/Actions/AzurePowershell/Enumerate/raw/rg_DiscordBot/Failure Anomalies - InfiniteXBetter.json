@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "smartdetectoralertrules_failure_anomalies___infinitexbetter_name": {
+      "defaultValue": "failure anomalies - infinitexbetter",
+      "type": "String"
+    },
+    "components_infinitexbetter_externalid": {
+      "defaultValue": "/subscriptions/489d031c-25dc-4c75-9be4-cf094616e087/resourceGroups/rg_discordbot/providers/microsoft.insights/components/infinitexbetter",
+      "type": "String"
+    },
+    "actiongroups_application_insights_smart_detection_externalid": {
+      "defaultValue": "/subscriptions/489d031c-25dc-4c75-9be4-cf094616e087/resourceGroups/rg_discordbot/providers/microsoft.insights/actiongroups/application insights smart detection",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('smartdetectoralertrules_failure_anomalies___infinitexbetter_name')]",
+      "location": "global",
+      "properties": {
+        "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+        "state": "Enabled",
+        "severity": "Sev3",
+        "frequency": "PT1M",
+        "detector": {
+          "id": "FailureAnomaliesDetector"
+        },
+        "scope": [
+          "[parameters('components_infinitexbetter_externalid')]"
+        ],
+        "actionGroups": {
+          "groupIds": [
+            "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
+          ]
+        }
+      }
+    }
+  ]
+}

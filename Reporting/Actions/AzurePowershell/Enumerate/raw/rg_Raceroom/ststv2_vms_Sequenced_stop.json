@@ -1,0 +1,120 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workflows_ststv2_vms_Sequenced_stop_name": {
+      "defaultValue": "ststv2_vms_Sequenced_stop",
+      "type": "String"
+    },
+    "sites_AFRaceroomxokk4blv6ky3i_externalid": {
+      "defaultValue": "/subscriptions/489d031c-25dc-4c75-9be4-cf094616e087/resourceGroups/rg_Raceroom/providers/Microsoft.Web/sites/AFRaceroomxokk4blv6ky3i",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('workflows_ststv2_vms_Sequenced_stop_name')]",
+      "location": "centralus",
+      "tags": {
+        "SolutionName": "StartStopV2"
+      },
+      "properties": {
+        "state": "Disabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "schedule": {
+                  "hours": [
+                    "18"
+                  ],
+                  "minutes": [
+                    30
+                  ]
+                },
+                "timeZone": "Pacific Standard Time"
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "schedule": {
+                  "hours": [
+                    "18"
+                  ],
+                  "minutes": [
+                    30
+                  ]
+                },
+                "timeZone": "Pacific Standard Time"
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "Function-Catch": {
+              "actions": {
+                "Terminate": {
+                  "type": "Terminate",
+                  "inputs": {
+                    "runError": {
+                      "code": "@{outputs('Scheduled')['statusCode']}",
+                      "message": "@{body('Scheduled')}"
+                    },
+                    "runStatus": "Failed"
+                  }
+                }
+              },
+              "runAfter": {
+                "Function-Try": [
+                  "Failed",
+                  "Skipped",
+                  "TimedOut"
+                ]
+              },
+              "type": "Scope"
+            },
+            "Function-Success": {
+              "runAfter": {
+                "Function-Try": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Scope"
+            },
+            "Function-Try": {
+              "actions": {
+                "Scheduled": {
+                  "type": "Function",
+                  "inputs": {
+                    "body": {
+                      "Action": "stop",
+                      "Sequenced": true,
+                      "RequestScopes": {
+                        "ResourceGroups": [
+                          "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg1/",
+                          "/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rg2/"
+                        ]
+                      }
+                    },
+                    "function": {
+                      "id": "[concat(parameters('sites_AFRaceroomxokk4blv6ky3i_externalid'), '/functions/Scheduled')]"
+                    }
+                  }
+                }
+              },
+              "type": "Scope"
+            }
+          }
+        },
+        "parameters": {}
+      }
+    }
+  ]
+}

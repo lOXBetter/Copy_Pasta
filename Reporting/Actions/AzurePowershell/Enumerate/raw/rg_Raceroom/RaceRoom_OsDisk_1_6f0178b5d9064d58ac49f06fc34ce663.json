@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "disks_RaceRoom_OsDisk_1_6f0178b5d9064d58ac49f06fc34ce663_name": {
+      "defaultValue": "RaceRoom_OsDisk_1_6f0178b5d9064d58ac49f06fc34ce663",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Compute/disks",
+      "apiVersion": "2022-07-02",
+      "name": "[parameters('disks_RaceRoom_OsDisk_1_6f0178b5d9064d58ac49f06fc34ce663_name')]",
+      "location": "centralus",
+      "sku": {
+        "name": "StandardSSD_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "osType": "Windows",
+        "hyperVGeneration": "V1",
+        "creationData": {
+          "createOption": "FromImage",
+          "imageReference": {
+            "id": "/Subscriptions/489d031c-25dc-4c75-9be4-cf094616e087/Providers/Microsoft.Compute/Locations/centralus/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4104.2012040817"
+          }
+        },
+        "diskSizeGB": 127,
+        "diskIOPSReadWrite": 500,
+        "diskMBpsReadWrite": 60,
+        "encryption": {
+          "type": "EncryptionAtRestWithPlatformKey"
+        },
+        "networkAccessPolicy": "AllowAll",
+        "publicNetworkAccess": "Enabled",
+        "diskState": "Reserved"
+      }
+    }
+  ]
+}
